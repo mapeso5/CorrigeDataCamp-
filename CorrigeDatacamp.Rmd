@@ -6,6 +6,19 @@ date: "2026-04-14"
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(readxl)
+library(openxlsx)
+library(stringr)
+```
+
+```{r}
+# 1. Descomprimir el fichero
+zip_file <- "entregas.zip" # Ajustar al nombre real
+unzip(zip_file, exdir = "entregas_descomprimidas")
 
 ```
 
