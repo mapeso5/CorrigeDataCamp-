@@ -65,3 +65,23 @@ evalua_df <- evalua_df[order(evalua_df$apellidos), ]
 write.xlsx(evalua_df, "NotasRIntermedio.xlsx")
 ```
 
+
+```{r}
+# 4. Cruce con el listado oficial de alumnos
+alumnos_mat <- read_excel("AlumnosTD25_26 (1).xlsx")
+alumnos_mat$`Apellido(s)` <- trimws(alumnos_mat$`Apellido(s)`)
+evalua_df$apellidos <- trimws(evalua_df$apellidos)
+
+# Realizamos la combinación
+alumnos_notas <- merge(
+  alumnos_mat, 
+  evalua_df, 
+  by.x = "Apellido(s)",
+  by.y = "apellidos", 
+  all.x = TRUE           
+)
+
+# Guardar el resultado final
+write.xlsx(alumnos_notas, "AlumnosNotas.xlsx")
+```
+
