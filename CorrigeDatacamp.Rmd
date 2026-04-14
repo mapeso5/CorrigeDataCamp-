@@ -33,3 +33,35 @@ puntos_files <- all_files[grep("puntos.*\\.txt$", all_files, ignore.case = TRUE)
 cert_files <- all_files[grep("\\.pdf$", all_files, ignore.case = TRUE)]
 ```
 
+
+```{r}
+# 3. Procesamiento y creación del dataframe evalua_df
+procesar_entrega <- function(ruta_txt) {
+  # Extraer la carpeta del alumno (nivel intermedio en la ruta)
+  partes <- unlist(strsplit(ruta_txt, "/"))
+  carpeta_alumno <- partes[2] 
+  
+  # Extraer apellidos (asumiendo formato "Apellidos, Nombre_ID")
+  apellidos_extraidos <- trimws(unlist(strsplit(carpeta_alumno, ","))[1])
+  lineas <- readLines(ruta_txt, warn = FALSE)
+  contenido_txt <- paste(lineas, collapse = " ")
+  puntos_num <- as.numeric(str_extract(contenido_txt, "\\d+"))
+  
+  data.frame(
+    apellidos = apellidos_extraidos,
+    puntos = puntos_num,
+    NomFile = basename(ruta_txt),
+    Puntos = contenido_txt,
+    stringsAsFactors = FALSE
+  )
+}
+lista_resultados <- lapply(puntos_files, procesar_entrega)
+evalua_df <- do.call(rbind, lista_resultados)
+
+# Ordenar alfabéticamente por apellidos
+evalua_df <- evalua_df[order(evalua_df$apellidos), ]
+
+
+write.xlsx(evalua_df, "NotasRIntermedio.xlsx")
+```
+
