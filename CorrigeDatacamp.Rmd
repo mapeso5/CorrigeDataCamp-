@@ -17,8 +17,19 @@ library(stringr)
 
 ```{r}
 # 1. Descomprimir el fichero
-zip_file <- "entregas.zip" # Ajustar al nombre real
+zip_file <- "2025-26 Tractament de les dades Gr.A-T (36423)-Tarea Intermediate R(Datacamp)-3281647 (1).zip" # Ajustar al nombre real
 unzip(zip_file, exdir = "entregas_descomprimidas")
+```
 
+
+```{r}
+# 2. Localización de archivos con Regex
+# Buscamos puntos.txt (o variaciones) y certificados pdf
+all_files <- list.files("entregas_descomprimidas", recursive = TRUE, full.names = TRUE)
+
+# Regex: que contenga "puntos" y termine en .txt
+puntos_files <- all_files[grep("puntos.*\\.txt$", all_files, ignore.case = TRUE)]
+# Regex: que termine en .pdf (el certificado)
+cert_files <- all_files[grep("\\.pdf$", all_files, ignore.case = TRUE)]
 ```
 
